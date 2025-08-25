@@ -3,12 +3,15 @@ let userSeq = [];
 
 let started = false;
 let level = 0;
+let highscore = 0;
 
 let h2 = document.querySelector("h2");
+let p = document.querySelector('#higestScore');
 
 document.addEventListener('keydown' , (event) => {
     if(started == false) {
-       started = true;  
+       started = true;
+        
        levelUp();
     }
 });
@@ -21,7 +24,8 @@ start.addEventListener('click' , (event) => {
         levelUp();
     } else {
         resetGame();
-    }  
+    }
+    
 });
 
 let btns = document.querySelectorAll('.btn');
@@ -31,6 +35,7 @@ function levelUp() {
     let btn = Math.floor(Math.random() * 4);
     gameSeq.push(btn);
     gameFlash(btns[btn]);
+    userSeq = []; 
 }
 
 function gameFlash(btn) {
@@ -51,17 +56,7 @@ function userFlash(btn) {
 function btnPress(btn) {
     userSeq.push(btn);
     userFlash(btns[btn]);
-    if(gameSeq.length == userSeq.length) {
-        if(checkAns()) {
-            setTimeout(() =>{
-                levelUp();
-                userSeq = [];  
-            }, 1000);
-        } else {
-            h2.innerText = `Wrong Sequence \n Your Highest Score is ${level-1}  \n Press any Key To Restart`;
-            resetGame();
-        }
-    }
+    checkAns(userSeq.length-1);
 }
 
 for (let i = 0 ; i < btns.length ; i++) {
@@ -70,18 +65,36 @@ for (let i = 0 ; i < btns.length ; i++) {
     })
 }
 
-function checkAns() {
-    return gameSeq.every((val,idx) => val === userSeq[idx]);
-}
 
+function checkAns(idx) {
+    if(gameSeq[idx] === userSeq[idx]) {
+        if(gameSeq.length == userSeq.length) {
+            h2.innerText = `Well Done`;
+            setTimeout(() =>{
+                levelUp(); 
+            }, 1000);
+        }
+
+    } else {
+        window.navigator.vibrate(400);
+        let body = document.querySelector('body');
+        body.style.backgroundColor = "#a5312f7b";
+        body.classList.add('shake');
+        setTimeout(()=> {
+            body.style.backgroundColor = "";
+            body.classList.remove('shake');
+        },300)
+        highscore = Math.max(highscore, level-1);
+        p.innerText  = `Highest Score : ${highscore}`
+        h2.innerText = `Wrong Sequence \n Your Score is ${level-1} \n  \n Press any Key To Restart`;
+        resetGame();
+    }
+}
 
 function resetGame() {
     started = false;
     gameSeq = [];
     userSeq = [];
     level = 0;
+    start.innerText = "Start Game"
 }
-
-
-
-
