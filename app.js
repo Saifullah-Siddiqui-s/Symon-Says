@@ -51,14 +51,16 @@ function userFlash(btn) {
 function btnPress(btn) {
     userSeq.push(btn);
     userFlash(btns[btn]);
-    if(checkAns()) {
-        setTimeout(() =>{
-            levelUp();
-            userSeq = [];  
-        }, 1000);
-    } else {
-        h2.innerText = `Wrong Sequence \n Your Highest Score is ${level-1}  \n Press any Key To Restart`;
-        resetGame();
+    if(gameSeq.length == userSeq.length) {
+        if(checkAns()) {
+            setTimeout(() =>{
+                levelUp();
+                userSeq = [];  
+            }, 1000);
+        } else {
+            h2.innerText = `Wrong Sequence \n Your Highest Score is ${level-1}  \n Press any Key To Restart`;
+            resetGame();
+        }
     }
 }
 
@@ -79,5 +81,6 @@ function resetGame() {
     userSeq = [];
     level = 0;
 }
+
 
 
