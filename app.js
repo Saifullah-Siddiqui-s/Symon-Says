@@ -8,8 +8,7 @@ let h2 = document.querySelector("h2");
 
 document.addEventListener('keydown' , (event) => {
     if(started == false) {
-       started = true;
-        
+       started = true;  
        levelUp();
     }
 });
@@ -20,8 +19,9 @@ start.addEventListener('click' , (event) => {
         started = true;
         start.innerText = "Restart"
         levelUp();
-    }
-    resetGame();
+    } else {
+        resetGame();
+    }  
 });
 
 let btns = document.querySelectorAll('.btn');
@@ -81,6 +81,7 @@ function resetGame() {
     userSeq = [];
     level = 0;
 }
+
 
 
 
